@@ -140,10 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Calculation.cpp" />
+    <ClCompile Include="ExplicitDifferenceSchemeMethod.cpp" />
     <ClCompile Include="lab2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calculation.h" />
+    <ClInclude Include="ExplicitDifferenceSchemeMethod.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

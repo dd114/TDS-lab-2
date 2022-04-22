@@ -73,7 +73,7 @@ public:
 
 		ofstream file(fileName);
 
-		assert(first.size() == second.size() && "Sizes match");
+		assert(first.size() == second.size() && "Size mismatch");
 
 		for (int i = 0; i < first.size(); i++) {
 			//cout << "file = " << i << endl;
@@ -91,6 +91,16 @@ public:
 	void setNumberOfPointByX(int numberOfPointByX) {
 		this->numberOfPointByX = numberOfPointByX;
 	}
+
+	double exactSolution(double t, double x) {
+		return t * t * x * x / 2 + x;
+	}
+
+
+protected:
+	virtual void Calculate(double t, double x) = 0;
+
+
 
 };
 

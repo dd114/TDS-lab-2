@@ -21,9 +21,15 @@
     <ClCompile Include="Calculation.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="ExplicitDifferenceSchemeMethod.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calculation.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplicitDifferenceSchemeMethod.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
