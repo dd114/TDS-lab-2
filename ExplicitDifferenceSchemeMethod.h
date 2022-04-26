@@ -81,6 +81,17 @@ private:
             //cout << grid[j][numberOfPointByX - 1] << endl;
         }
 
+        //int j = 2;
+
+        //cout << psi_1(j * stepByT) << endl;
+        //cout << stepByT << endl;
+        //cout << beta1 << endl;
+        //cout << grid[j][numberOfPointByX - 2] << endl;
+        //cout << alfa1 << endl;
+        //cout << stepByX << endl;
+
+
+
         //printArray(grid);
 
 
