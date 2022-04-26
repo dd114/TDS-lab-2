@@ -23,14 +23,18 @@ public:
         return lastTimeLayer[firstPoint];
     }
 
-    //double ValuesOfU(double t, int numberOfPointByX) {
-    //    this->numberOfPointByX = numberOfPointByX;
-    //    this->x.resize(numberOfPoint);
-    //    this->v.resize(numberOfPoint);
+    double ValuesOfU(double t, double x, int numberOfPointByT, int numberOfPointByX) {
+        this->numberOfPointByX = numberOfPointByX;
+        this->numberOfPointByT = numberOfPointByT;
 
-    //    Calculate(t);
-    //    return B * x[this->numberOfPoint - 1];
-    //}
+        this->grid = vector<vector<double>>(numberOfPointByT, vector<double>(numberOfPointByX));
+
+        Calculate(t, x);
+        int firstPoint = floor(x / stepByX);
+        int secondPoint = firstPoint + 1;
+        vector<double> lastTimeLayer = grid.back();
+        return lastTimeLayer[firstPoint];
+    }
 
     ~ExplicitDifferenceSchemeMethod() {
 
@@ -49,7 +53,7 @@ private:
         if (!stepByTÑheck(stepByT, stepByX)) {
             this->numberOfPointByT = ceil(2 * t * k0 / (stepByX * stepByX) + 1);
             this->stepByT = t / (numberOfPointByT - 1);
-            this->grid = vector<vector<double>>(numberOfPointByT, vector<double>(numberOfPointByX));
+            this->grid = vector<vector<double>>(numberOfPointByT, vector<double>(numberOfPointByX, 0));
             cout << "VALUE numberOfPointByT WILL BE CHANGED ON " << numberOfPointByT << endl;
             //if (numberOfPointByT < 0) cerr << "numberOfPointByT is negative" << endl;
         }
@@ -69,13 +73,15 @@ private:
                 grid[j][n] = grid[j - 1][n] + stepByT * k0 / (stepByX * stepByX) * (grid[j - 1][n + 1] - 2 * grid[j - 1][n] + grid[j - 1][n - 1]) + stepByT * f0((j - 1) * stepByT, n * stepByX);
             }
 
-            grid[j][0] = (psi_0((t + 1) * stepByT) * stepByX - beta0 * grid[j][1]) /
+            grid[j][0] = (psi_0((j) * stepByT) * stepByX - beta0 * grid[j][1]) /
                 (alfa0 * stepByX - beta0);
-            grid[j][numberOfPointByX - 1] = (psi_1((t + 1) * stepByT) * stepByX +
+            grid[j][numberOfPointByX - 1] = (psi_1((j) * stepByT) * stepByX +
                                              beta1 * grid[j][numberOfPointByX - 2]) / (alfa1 * stepByX + beta1);
 
 
         }
+
+        //printArray(grid);
 
 
     }
