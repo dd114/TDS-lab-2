@@ -17,7 +17,7 @@ private:
 
 protected:
 	int numberOfPointByT, numberOfPointByX;
-	double (*f)(double, double);
+	double (*f0)(double, double);
 	double (*phi)(double), (*psi_0)(double), (*psi_1)(double);
 	double k0; 
 	double alfa0, alfa1, beta0, beta1;
@@ -30,9 +30,9 @@ public:
 
 	Calculation() { // individual option
 		this->numberOfPointByT = 1e+3;
-		this->numberOfPointByX = 1e+3;
+		this->numberOfPointByX = 1e+2;
 		this->k0 = 1;
-		this->f = [](double t, double x) {
+		this->f0 = [](double t, double x) {
 			return t * x * x - t * t;
 		};
 		this->phi = [](double x) {
