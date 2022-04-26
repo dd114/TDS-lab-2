@@ -33,7 +33,7 @@ public:
         int firstPoint = floor(x / stepByX);
         int secondPoint = firstPoint + 1;
         vector<double> lastTimeLayer = grid.back();
-        return lastTimeLayer[firstPoint];
+        return (lastTimeLayer[firstPoint] + lastTimeLayer[secondPoint]) / 2;
     }
 
     ~ExplicitDifferenceSchemeMethod() {
@@ -78,7 +78,7 @@ private:
 
         }
 
-        //printArray(grid);
+        printArray(grid);
 
 
     }
