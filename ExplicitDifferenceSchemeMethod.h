@@ -49,8 +49,9 @@ private:
         if (!stepByTÑheck(stepByT, stepByX)) {
             this->numberOfPointByT = ceil(2 * t * k0 / (stepByX * stepByX) + 1);
             this->stepByT = t / (numberOfPointByT - 1);
+            this->grid = vector<vector<double>>(numberOfPointByT, vector<double>(numberOfPointByX));
             cout << "VALUE numberOfPointByT WILL BE CHANGED ON " << numberOfPointByT << endl;
-            if (numberOfPointByT < 0) cerr << "numberOfPointByT is negative" << endl;
+            //if (numberOfPointByT < 0) cerr << "numberOfPointByT is negative" << endl;
         }
 
         if (!stepByTÑheck(stepByT, stepByX)) {
@@ -58,11 +59,21 @@ private:
             throw stepByT;
         }
 
-        //for (int j = 1; j < numberOfPointByT; j++) {
-        //    for (int n = numberOfPointByX - 2; n <= numberOfPointByX; n++) {
-        //        grid;
-        //    }
-        //}
+
+        for (int i = 0; i < grid[0].size(); i++) 
+            grid[0][i] = phi(stepByX * i);
+
+        
+        for (int j = 1; j < numberOfPointByT; j++) {
+            for (int n = 1; n < numberOfPointByX - 1; n++) {
+                grid[j][n] = grid[j - 1][n] + stepByT * (k0 / (stepByX * stepByX) * (grid[j - 1][n + 1] - 2 * grid[j - 1][n] + grid[j - 1][n - 1]));
+            }
+            grid[j][0] = (psi_0(j * stepByT) - beta0 / stepByX * grid[j][1]) / (alfa0 - beta0 / stepByX);
+            grid[j][numberOfPointByX - 1] = (psi_1(j * stepByT) + beta1 / stepByX * grid[j][numberOfPointByX - 2]) / (alfa1 + beta1 / stepByX);
+
+
+        }
+
 
     }
 };

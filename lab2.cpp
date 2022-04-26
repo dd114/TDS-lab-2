@@ -4,7 +4,8 @@
 using namespace std;
 int main() {
     ExplicitDifferenceSchemeMethod ExplicitDifferenceScheme;
-    ExplicitDifferenceScheme.ValuesOfU(10, 0.8);
+    cout << ExplicitDifferenceScheme.ValuesOfU(10, 0.8) << endl;
+    cout << ExplicitDifferenceScheme.exactSolution(10, 0.8) << endl;
     cout << "Hello World!" << endl;
 }
 
