@@ -16,11 +16,12 @@ private:
 
 
 protected:
-	int numberOfPointByT, numberOfPointByX;
+	int numberOfPointByT = -1, numberOfPointByX = -1;
 	double (*f)(double, double);
 	double (*phi)(double), (*psi_0)(double), (*psi_1)(double);
 	double k0; 
 	double alfa0, alfa1, beta0, beta1;
+	double startX, endX;
 
 	vector<vector<double>> grid;
 
@@ -28,8 +29,8 @@ protected:
 public:
 
 	Calculation() { // individual option
-		this->numberOfPointByT = 1e+3;
-		this->numberOfPointByX = 1e+3;
+		//this->numberOfPointByT = 1e+3; // it will be changed maybe
+		//this->numberOfPointByX = 1e+3; // it will be changed maybe
 		this->k0 = 1;
 		this->f = [](double t, double x) {
 			return t * x * x - t * t;
@@ -47,8 +48,10 @@ public:
 		this->alfa1 = 1;
 		this->beta0 = 1;
 		this->beta1 = 1;
+		this->startX = 0;
+		this->endX = 1;
 
-		grid = vector<vector<double>>(numberOfPointByT, vector<double>(numberOfPointByX));
+		//this->grid = vector<vector<double>>(numberOfPointByT, vector<double>(numberOfPointByX)); // it will be changed maybe
 
 	}
 
@@ -84,16 +87,37 @@ public:
 
 	}
 
-	void setNumberOfPointByT(int numberOfPointByT) {
+	virtual void setNumberOfPointByT(int numberOfPointByT) {
 		this->numberOfPointByT = numberOfPointByT;
 	}
 
-	void setNumberOfPointByX(int numberOfPointByX) {
+	virtual void setNumberOfPointByX(int numberOfPointByX) {
 		this->numberOfPointByX = numberOfPointByX;
 	}
 
 	double exactSolution(double t, double x) {
 		return t * t * x * x / 2 + x;
+	}
+
+	template <typename T>
+	void printArray(const vector<vector<T>>& matrix1) {
+
+		for (int i = 0; i < matrix1.size(); i++) {
+			for (int j = 0; j < matrix1[i].size(); j++) {
+				cout << matrix1[i][j] << " ";
+			}
+			cout << endl;
+		}
+
+	}
+
+	template <typename T>
+	void printArray(const vector<T>& matrix1) {
+
+		for (int i = 0; i < matrix1.size(); i++) {
+			cout << matrix1[i] << endl;
+		}
+
 	}
 
 
