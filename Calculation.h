@@ -42,7 +42,7 @@ public:
 			return 1.0;
 		};
 		this->psi_1 = [](double t) {
-			return 3 / 2 * t * t + 2;
+			return 3. / 2. * t * t + 2;
 		};
 		this->alfa0 = 0;
 		this->alfa1 = 1;

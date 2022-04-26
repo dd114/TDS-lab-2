@@ -78,7 +78,7 @@ private:
 
         }
 
-        printArray(grid);
+        //printArray(grid);
 
 
     }
