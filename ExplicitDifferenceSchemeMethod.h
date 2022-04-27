@@ -43,7 +43,7 @@ public:
         for (int i = 0; i < grid.size(); i++) {
             for (int j = 0; j < grid[i].size(); j++) {
                 double exactValueOfU = exactSolution(i * stepByT, j * stepByX);
-                double inaccuracy = grid[i][j] - exactValueOfU;
+                double inaccuracy = abs(grid[i][j] - exactValueOfU);
                 if (inaccuracy > maxInaccuracy) {
                     maxInaccuracy = inaccuracy;
                 }
