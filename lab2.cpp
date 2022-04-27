@@ -1,13 +1,16 @@
 ﻿#include "ExplicitDifferenceSchemeMethod.h"
+#include "ImplicitDifferenceSchemeMethod.h"
 
 using namespace std;
 
 void PART1();
+void PART2();
 
 
 int main() {
 
-    PART1();
+    //PART1();
+    PART2();
 
 }
 
@@ -41,4 +44,15 @@ void PART1(){
 
     ExplicitDifferenceScheme.makeFileForGraph(stepOfPointXGrid, inaccuracySolution, "1.3.txt");
     ExplicitDifferenceScheme.drawGraph("1.3.txt", "Inaccuracy ExplicitDifferenceScheme solution");
+}
+
+void PART2() {
+    int numberOfValues = 1;
+    int offset = 5;
+    vector<int> stepOfPointXGrid(numberOfValues);
+    vector<double> valuesFunction(numberOfValues);
+    vector<double> inaccuracySolution(numberOfValues);
+
+    //2.1
+    ImplicitDifferenceSchemeMethod ImplicitDifferenceScheme;
 }
