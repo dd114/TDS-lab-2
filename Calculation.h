@@ -31,7 +31,7 @@ public:
 	Calculation() { // individual option
 		this->numberOfPointByT = 1e+3;
 		this->numberOfPointByX = 1e+2;
-		this->k0 = 1;
+		this->k0 = 1.;
 		this->f0 = [](double t, double x) {
 			return t * x * x - t * t;
 		};
