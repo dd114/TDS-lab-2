@@ -68,7 +68,7 @@ private:
         }
 
         if (!stepByTÑheck(stepByT, stepByX)) {
-            this->numberOfPointByT = round(2. * t * k0 / (stepByX * stepByX) + 1.) + 1;
+            this->numberOfPointByT = floor(2. * t * k0 / (stepByX * stepByX) + 1.) + 1;
             this->stepByT = t / (numberOfPointByT - 1);
             if (output) 
                 cout << "VALUE numberOfPointByT WILL BE CHANGED ON " << numberOfPointByT << endl;
