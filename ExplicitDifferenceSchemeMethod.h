@@ -33,7 +33,7 @@ public:
         int firstPoint = floor(x / stepByX);
         int secondPoint = firstPoint + 1;
         vector<double> lastTimeLayer = grid.back();
-        return (lastTimeLayer[firstPoint] + lastTimeLayer[secondPoint]) / 2;
+        return lastTimeLayer[firstPoint];
     }
 
     ~ExplicitDifferenceSchemeMethod() {
@@ -73,8 +73,8 @@ private:
                 grid[j][n] = grid[j - 1][n] + stepByT * k0 / (stepByX * stepByX) * (grid[j - 1][n + 1] - 2 * grid[j - 1][n] + grid[j - 1][n - 1]) + stepByT * f0((j - 1) * stepByT, n * stepByX);
             }
 
-            grid[j][0] = (psi_0(j * stepByT) - beta0 / stepByX * grid[j][1]) / (alfa0 - beta0 / stepByX);
-            grid[j][numberOfPointByX - 1] = (psi_1(j * stepByT) + beta1 / stepByX * grid[j][numberOfPointByX - 2]) / (alfa1 + beta1 / stepByX);
+            grid[j][0] = (psi_0(j * stepByT) * stepByX - beta0 * grid[j][1]) / (alfa0 * stepByX - beta0);
+            grid[j][numberOfPointByX - 1] = (psi_1(j * stepByT) * stepByX + beta1 * grid[j][numberOfPointByX - 2]) / (alfa1 * stepByX + beta1);
 
         }
 
