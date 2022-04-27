@@ -1,8 +1,17 @@
 ﻿#include "ExplicitDifferenceSchemeMethod.h"
 
 using namespace std;
+
+void PART1();
+
+
 int main() {
 
+    PART1();
+
+}
+
+void PART1(){
     int numberOfValues = 1;
     int offset = 5;
     vector<int> stepOfPointXGrid(numberOfValues);
@@ -32,6 +41,4 @@ int main() {
 
     ExplicitDifferenceScheme.makeFileForGraph(stepOfPointXGrid, inaccuracySolution, "1.3.txt");
     ExplicitDifferenceScheme.drawGraph("1.3.txt", "Inaccuracy ExplicitDifferenceScheme solution");
-
 }
-
