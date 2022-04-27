@@ -73,10 +73,8 @@ private:
                 grid[j][n] = grid[j - 1][n] + stepByT * k0 / (stepByX * stepByX) * (grid[j - 1][n + 1] - 2 * grid[j - 1][n] + grid[j - 1][n - 1]) + stepByT * f0((j - 1) * stepByT, n * stepByX);
             }
 
-            grid[j][0] = (psi_0(j * stepByT) * stepByX - beta0 * grid[j][1]) /
-                (alfa0 * stepByX - beta0);
-            grid[j][numberOfPointByX - 1] = (psi_1(j * stepByT) * stepByX +
-                                             beta1 * grid[j][numberOfPointByX - 2]) / (alfa1 * stepByX + beta1);
+            grid[j][0] = (psi_0(j * stepByT) * stepByX - beta0 * grid[j][1]) / (alfa0 * stepByX - beta0);
+            grid[j][numberOfPointByX - 1] = (psi_1(j * stepByT) * stepByX + beta1 * grid[j][numberOfPointByX - 2]) / (alfa1 * stepByX + beta1);
 
             //cout << grid[j][numberOfPointByX - 1] << endl;
         }
