@@ -18,7 +18,7 @@ public:
     double ValuesOfU(double t, double x) {
         Calculate(t, x);
         int firstPoint = floor(x / stepByX);
-        int secondPoint = firstPoint + 1;
+        //int secondPoint = firstPoint + 1;
         vector<double> lastTimeLayer = grid.back();
         return lastTimeLayer[firstPoint];
     }
@@ -31,7 +31,7 @@ public:
 
         Calculate(t, x);
         int firstPoint = floor(x / stepByX);
-        int secondPoint = firstPoint + 1;
+        //int secondPoint = firstPoint + 1;
         vector<double> lastTimeLayer = grid.back();
         return lastTimeLayer[firstPoint];
     }
@@ -45,7 +45,7 @@ private:
         return stepByT <= stepByX * stepByX / (2 * k0);
     }
 
-    void Calculate(double t, double x) {
+    virtual void Calculate(double t, double x) override {
 
         this->stepByX = 1. / (numberOfPointByX - 1);
         this->stepByT = t / (numberOfPointByT - 1);
