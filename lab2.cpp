@@ -3,21 +3,35 @@
 using namespace std;
 int main() {
 
+    int numberOfValues = 1;
+    int offset = 5;
+    vector<int> stepOfPointXGrid(numberOfValues);
+    vector<double> valuesFunction(numberOfValues);
+    vector<double> inaccuracySolution(numberOfValues);
+
+
     //1.1
     ExplicitDifferenceSchemeMethod ExplicitDifferenceScheme;
+
     //1.2
     double x = 0.8;
     cout << ExplicitDifferenceScheme.ValuesOfU(1, x, 200, 10) << endl;
+
     //1.3
+    offset = 5;
+    numberOfValues = 100;
+    stepOfPointXGrid.resize(numberOfValues - offset);
+    valuesFunction.resize(numberOfValues - offset);
+    inaccuracySolution.resize(numberOfValues - offset);
     x = 0.8;
-    //cout << ExplicitDifferenceScheme.ValuesOfU(1, x, 2, 10) << endl;
-    cout << ExplicitDifferenceScheme.maximumOfInaccuracyGrid(1, x, 2, 10) << endl;
-    //cout << ExplicitDifferenceScheme.ValuesOfU(1, x, 2, 150) << endl;
-    cout << ExplicitDifferenceScheme.maximumOfInaccuracyGrid(1, x, 2, 150) << endl;
-    cout << "Exact solution = " << ExplicitDifferenceScheme.exactSolution(1, x) << endl;
 
-    //cout << ExplicitDifferenceScheme.ValuesOfU(1, x, 1e+1, 5) << endl;
+    for (int numberOfPointByX = offset; numberOfPointByX < numberOfValues; numberOfPointByX++) {
+        stepOfPointXGrid[numberOfPointByX - offset] = numberOfPointByX;
+        inaccuracySolution[numberOfPointByX - offset] = ExplicitDifferenceScheme.maximumOfInaccuracyGrid(1, x, 5, numberOfPointByX);
+    }
 
-    //cout << "Hello World!" << endl;
+    ExplicitDifferenceScheme.makeFileForGraph(stepOfPointXGrid, inaccuracySolution, "1.3.txt");
+    ExplicitDifferenceScheme.drawGraph("1.3.txt", "Inaccuracy ExplicitDifferenceScheme solution");
+
 }
 
