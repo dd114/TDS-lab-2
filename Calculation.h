@@ -101,7 +101,7 @@ public:
 
 	template <typename T>
 	void printArray(const vector<vector<T>>& matrix1) {
-
+		cout << matrix1.size() << "x" << matrix1[0].size() << endl;
 		for (int i = 0; i < matrix1.size(); i++) {
 			for (int j = 0; j < matrix1[i].size(); j++) {
 				cout << matrix1[i][j] << " ";
@@ -113,7 +113,7 @@ public:
 
 	template <typename T>
 	void printArray(const vector<T>& matrix1) {
-
+		cout << matrix1.size() << endl;
 		for (int i = 0; i < matrix1.size(); i++) {
 			cout << matrix1[i] << endl;
 		}

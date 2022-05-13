@@ -13,6 +13,7 @@ public:
 
     ImplicitDifferenceSchemeMethod() : Calculation() {
         this->a = sqrt(k0);
+
     }
 
     double ValuesOfU(double t, double x) {
@@ -27,7 +28,7 @@ public:
         this->numberOfPointByX = numberOfPointByX;
         this->numberOfPointByT = numberOfPointByT;
 
-        //this->grid = vector<vector<double>>(numberOfPointByT, vector<double>(numberOfPointByX));
+        this->grid = vector<vector<double>>(numberOfPointByT, vector<double>(numberOfPointByX));
 
         Calculate(t, x);
         int firstPoint = floor(x / stepByX);
@@ -65,75 +66,92 @@ private:
         int numberOfStepsX = numberOfPointByX - 1;
         int numberOfStepsT = numberOfPointByT - 1;
 
+        for (int i = 0; i < grid[0].size(); i++)
+            grid[0][i] = phi(stepByX * i);
 
-        double* elementsMatrix = new double[numberOfPointByX * 4]; // 0 - верх диаг.; 1 - ср. диаг.; 2 - нижн. диаг.;
+        vector<vector<double>> matrix1(numberOfPointByX - 2, vector<double>(numberOfPointByX - 2));
+        vector<double> matrix2(numberOfPointByX - 2);
 
-        for (unsigned i = 0; i < numberOfPointByX; i++) {
-            grid[0][i] = phi(i * stepByX);
-        }
+        vector<double> tempNewTimeLayer(numberOfPointByX - 2);
 
-        for (unsigned t = 0; t < numberOfStepsT; ++t) {
+        double ai = -a * a / (stepByX * stepByX);
+        double bi = 1 / stepByT + 2 * a * a / (stepByX * stepByX);
+        double ci = ai;
 
-            //верхн.
-            elementsMatrix[0 * (numberOfStepsX + 1) + 0] = beta0;
 
-            //ср.
-            elementsMatrix[1 * (numberOfStepsX + 1) + 0] = stepByX * alfa0 - beta0;
-            elementsMatrix[1 * (numberOfStepsX + 1) + numberOfStepsX] = alfa1 * stepByX + beta1;
+        for (int j = 1; j < numberOfPointByT; j++) {
 
-            //нижн; 
-            elementsMatrix[2 * (numberOfStepsX + 1) + numberOfStepsX - 1] = -beta1;
+            matrix1[0][0] = bi - ai * beta0 / (alfa0 * stepByX - beta0);
+            matrix1[0][1] = ci;
 
-            //прав;
-            elementsMatrix[3 * (numberOfStepsX + 1) + 0] = stepByX * psi_0(stepByT * (t + 1));
-            elementsMatrix[3 * (numberOfStepsX + 1) + numberOfStepsX] = stepByX * psi_1(stepByT * (t + 1));
+            matrix2[0] = f0(stepByT * j, stepByX * 1) - ai * psi_0(stepByT * j) * stepByX / (alfa0 * stepByX - beta0) + grid[j - 1][1];
 
 
 
-            for (unsigned x = 1; x < numberOfStepsX; ++x) {
-                //верхн.
-                elementsMatrix[0 * (numberOfStepsX + 1) + x] = k0 * stepByT / (stepByX * stepByX);
 
-                //ср.
-                elementsMatrix[1 * (numberOfStepsX + 1) + x] = -2. * stepByT * k0 / (stepByX * stepByX) - 1;
+            int lastMatrixLayer = matrix1.size() - 1;
 
-                //нижн;
-                elementsMatrix[2 * (numberOfStepsX + 1) + x - 1] = k0 * stepByT / (stepByX * stepByX);
+            matrix1[lastMatrixLayer][lastMatrixLayer - 1] = ai;
+            matrix1[lastMatrixLayer][lastMatrixLayer] = bi + ci * beta1 / (alfa1 * stepByX + beta1);
 
-                //прав;
-                elementsMatrix[3 * (numberOfStepsX + 1) + x] = -grid[t][x] - stepByT * f0(stepByT * (t + 1), stepByX * (x));
+            matrix2[lastMatrixLayer] = f0(stepByT * j, stepByX * (numberOfPointByX - 2)) - ci * psi_1(stepByT * j) * stepByX / (alfa1 * stepByX + beta1) + grid[j - 1][(numberOfPointByX - 2)];
+
+
+            for (int l = 1; l < matrix1.size() - 1; l++) {
+                matrix1[l][l - 1] = ai;
+                matrix1[l][l] = bi;
+                matrix1[l][l + 1] = ci;
+
+                matrix2[l] = f0(stepByT * j, stepByX * (l + 1));
             }
 
-            progonka(elementsMatrix, t + 1);
+            tempNewTimeLayer = tridiagonalSolution(matrix1, matrix2);
+
+            for (int i = 0; i < numberOfPointByX - 2; i++) {
+                grid[j][i + 1] = tempNewTimeLayer[i];
+            }
+
+
+            grid[j][0] = (psi_0(j * stepByT) * stepByX - beta0 * grid[j][1]) / (alfa0 * stepByX - beta0);
+            grid[j][numberOfPointByX - 1] = (psi_1(j * stepByT) * stepByX + beta1 * grid[j][numberOfPointByX - 2]) / (alfa1 * stepByX + beta1);
+
+
         }
 
-        delete[] elementsMatrix;
+
+
+
+
+        //printArray(grid);
+
 
     }
 
 
-    void progonka(double* matrix, unsigned time)
-    {
-        for (unsigned x = 1; x <= numberOfStepsX; x++) {
-            matrix[1 * (numberOfStepsX + 1) + x] = matrix[1 * (numberOfStepsX + 1) + x] -
-                matrix[0 * (numberOfStepsX + 1) + x - 1] *
-                (matrix[2 * (numberOfStepsX + 1) + x - 1] /
-                 matrix[1 * (numberOfStepsX + 1) + x - 1]);
+    vector<double> tridiagonalSolution(const vector<vector<double>>& matrix1, const vector<double>& matrix2) {
+        assert(matrix1.size() == matrix2.size() && "Sizes match");
 
-            matrix[3 * (numberOfStepsX + 1) + x] = matrix[3 * (numberOfStepsX + 1) + x] -
-                matrix[3 * (numberOfStepsX + 1) + x - 1] *
-                (matrix[2 * (numberOfStepsX + 1) + x - 1] /
-                 matrix[1 * (numberOfStepsX + 1) + x - 1]);
+        double y;
+        int N = matrix2.size();
+        int N1 = N - 1;
+        vector<double> a(N), B(N), matRes(N);
 
-            matrix[2 * (numberOfStepsX + 1) + x - 1] = 0;
+        y = matrix1[0][0];
+        a[0] = -matrix1[0][1] / y;
+        B[0] = matrix2[0] / y;
+        for (int i = 1; i < N1; i++) {
+            y = matrix1[i][i] + matrix1[i][i - 1] * a[i - 1];
+            a[i] = -matrix1[i][i + 1] / y;
+            B[i] = (matrix2[i] - matrix1[i][i - 1] * B[i - 1]) / y;
         }
 
-        grid[(numberOfStepsX + 1) * time + numberOfStepsX] = matrix[3 * (numberOfStepsX + 1) + numberOfStepsX] / matrix[1 * (numberOfStepsX + 1) + numberOfStepsX];
-        for (int x = numberOfStepsX - 1; x >= 0; --x)
-            grid[(numberOfStepsX + 1) * time + x] = (matrix[3 * (numberOfStepsX + 1) + x] -
-                                                       matrix[0 * (numberOfStepsX + 1) + x] *
-                                                       grid[(numberOfStepsX + 1) * time + x + 1]) /
-            matrix[1 * (numberOfStepsX + 1) + x];
+        matRes[N1] = (matrix2[N1] - matrix1[N1][N1 - 1] * B[N1 - 1]) / (matrix1[N1][N1] + matrix1[N1][N1 - 1] * a[N1 - 1]);
+        for (int i = N1 - 1; i >= 0; i--) {
+            matRes[i] = a[i] * matRes[i + 1] + B[i];
+        }
+
+        return matRes;
+
     }
 
 };

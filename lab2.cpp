@@ -9,7 +9,7 @@ void PART2();
 
 int main() {
 
-    //PART1();
+    PART1();
     PART2();
 
 }
@@ -42,8 +42,8 @@ void PART1(){
         inaccuracySolution[numberOfPointByX - offset] = ExplicitDifferenceScheme.maximumOfInaccuracyGrid(1, x, 5, numberOfPointByX);
     }
 
-    ExplicitDifferenceScheme.makeFileForGraph(stepOfPointXGrid, inaccuracySolution, "1.3.txt");
-    ExplicitDifferenceScheme.drawGraph("1.3.txt", "Inaccuracy ExplicitDifferenceScheme solution");
+    //ExplicitDifferenceScheme.makeFileForGraph(stepOfPointXGrid, inaccuracySolution, "1.3.txt");
+    //ExplicitDifferenceScheme.drawGraph("1.3.txt", "Inaccuracy ExplicitDifferenceScheme solution");
 }
 
 void PART2() {
@@ -55,4 +55,9 @@ void PART2() {
 
     //2.1
     ImplicitDifferenceSchemeMethod ImplicitDifferenceScheme;
+
+    //2.1
+    double x = 0.8;
+    cout << ImplicitDifferenceScheme.ValuesOfU(1, x, 10, 100) << endl;
+    cout << ImplicitDifferenceScheme.exactSolution(1, x) << endl;
 }
