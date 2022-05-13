@@ -10,7 +10,7 @@ void PART2();
 int main() {
 
     PART1();
-    PART2();
+    //PART2();
 
 }
 
@@ -27,7 +27,8 @@ void PART1(){
 
     //1.2
     double x = 0.8;
-    cout << ExplicitDifferenceScheme.ValuesOfU(1, x, 200, 10) << endl;
+    cout << "mySolution = " << ExplicitDifferenceScheme.ValuesOfU(1, x, 200, 10) << endl;
+    cout << "exactSolution = " << ExplicitDifferenceScheme.exactSolution(1, x) << endl;
 
     //1.3
     offset = 5;
